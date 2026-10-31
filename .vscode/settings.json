@@ -1,0 +1,43 @@
+{
+  "chat.tools.terminal.autoApprove": {
+    "clear": true,
+    "egrep": true,
+    "fgrep": true,
+    "diff": true,
+    "uniq": true,
+    "mkdir": true,
+    "jq": true,
+
+    "/^(Get-(Item|ItemProperty|Command|Help|Member|Module|Process)|Resolve-Path|Out-Null|Write-Verbose|New-Guid|Test-Path|ConvertFrom-Json|ConvertTo-Json)\\b/i": true,
+
+    "/^git\\s+(fetch|describe|blame|rev-parse|rev-list|ls-remote|reflog|shortlog|show-ref|for-each-ref|merge-base|cat-file|whatchanged|stash\\s+list|config\\s+(--get|--get-all|--get-regexp|--list|-l))\\b/i": true,
+
+    "/\\s--(help|version)\\b/": true,
+
+    "/^pnpm\\s+(run\\s+)?(lint|build|build:skills|skills:coverage)\\b/": true,
+    "/^pnpm\\s+exec\\s+tsc\\s+--noEmit\\b/": true,
+    "/^openspec\\s+(list|show|status|instructions|validate|schemas|templates|context)\\b/": true,
+    // Repo scripts only — bare `node` would allow `node -e "<anything>"`.
+    "/^node\\s+scripts[\\\\/]/i": true,
+    "/^node\\s+.*\\.\\./i": false,
+
+    "/^New-Item\\b(?=.*-ItemType\\s+Directory)/i": true,
+    "/^Add-Content\\b.*evals[\\\\/]/i": true,
+
+    // Relative paths and the OS temp dir (eval workspaces) only.
+    "Remove-Item": true,
+    "/^Remove-Item\\b(?=.*(?:[A-Za-z]:[\\\\/]|\\\\\\\\|~[\\\\/]|\\/))(?!.*AppData[\\\\/]Local[\\\\/]Temp[\\\\/])/i": false,
+    "/^Remove-Item\\b.*\\$/i": false,
+    "/^Remove-Item\\b(?=(?:.*(?:[A-Za-z]:[\\\\/]|\\\\\\\\)){2})/i": false,
+    "/^Remove-Item\\b.*\\.\\./i": false,
+    "/^Remove-Item\\b.*\\.git\\b/i": false,
+
+    "npx": false,
+    "/^(pnpm|npm|yarn)\\s+(add|install|i|remove|rm|dlx|exec|link|publish|update|up)\\b(?!\\s+tsc\\s+--noEmit)/i": false,
+    "/^(Start-Process|Set-ExecutionPolicy|Set-Content|Out-File|Tee-Object)\\b/i": false,
+    "/(^|\\s)(ForEach-Object|%|Invoke-Expression|iex|Invoke-Command|icm)\\b/i": false,
+    "/^git\\s+(push|reset|revert|rebase|clean|filter-branch)\\b/i": false,
+    "/(^|\\s)-{1,2}force\\b/i": false,
+    "/^cd\\s+(\\.\\.|~|\\/|[A-Za-z]:)/i": false
+  }
+}

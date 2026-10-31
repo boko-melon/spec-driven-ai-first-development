@@ -1,0 +1,129 @@
+{
+  "skill_name": "validate-change",
+  "description": "Evaluates whether the validate-change skill produces structured, thorough validation reports compared to an unaided LLM.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "openspec-complete-change",
+      "prompt": "Validate the 'locale-switcher' change. The change artifacts are in the provided files (proposal.md, design.md, tasks.md). The app runs on localhost:3000. Do NOT actually start a dev server or use browser tools, just produce the report based on the artifacts. Assume all referenced files exist in the filesystem except the test file.",
+      "expected_output": "A structured validation report following the reporting format: completeness section with task counts, file existence checks, spec consistency verification, runtime validation plan, and a verdict with next steps.",
+      "files": [
+        "evals/files/openspec-complete/proposal.md",
+        "evals/files/openspec-complete/design.md",
+        "evals/files/openspec-complete/tasks.md"
+      ],
+      "assertions": [
+        "Report includes a task completeness count (e.g. '6/7 complete' or similar ratio)",
+        "Report identifies the missing test file as an incomplete item",
+        "Report includes a file existence section that references the expected component paths from design.md",
+        "Report verifies spec consistency claims (Client Component directive, CSS Modules with tokens, export chain)",
+        "Report includes a verdict of PARTIAL PASS (not full PASS, due to missing tests)",
+        "Report includes concrete suggested next steps mentioning the test file",
+        "Report uses the structured format with Completeness, Runtime Validation, and Verdict sections",
+        "Report includes a summary of what the change aimed to deliver (locale switcher for language switching)"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "openspec-incomplete-change",
+      "prompt": "Validate the 'flight-card' change. The change artifacts are in the provided files (proposal.md, design.md, tasks.md). Multiple implementation tasks are still incomplete. Produce a validation report — do NOT actually start a dev server or use browser tools. Assume only the files for completed tasks exist.",
+      "expected_output": "A validation report that clearly identifies multiple incomplete tasks, missing files, and gives a FAIL or PARTIAL PASS verdict with actionable next steps for each gap.",
+      "files": [
+        "evals/files/openspec-incomplete/proposal.md",
+        "evals/files/openspec-incomplete/design.md",
+        "evals/files/openspec-incomplete/tasks.md"
+      ],
+      "assertions": [
+        "Report identifies that only 3 of 7 tasks are complete",
+        "Report flags the missing stylesheet file (FlightCard.module.scss) as incomplete",
+        "Report flags the missing barrel export in molecules/index.ts",
+        "Report flags the missing test file",
+        "Report flags the missing search results integration",
+        "Report gives a FAIL or PARTIAL PASS verdict (not full PASS)",
+        "Report provides specific next steps for each incomplete item",
+        "Report references the responsive styling requirement from design.md as unimplemented"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "freeform-mode-validation",
+      "prompt": "Validate the work described in the provided context file. This is a freeform validation (no OpenSpec artifacts). The user created a Skeleton loading component. Produce a validation report — do NOT actually start a dev server or use browser tools. Assume the three listed files exist.",
+      "expected_output": "A validation report in freeform mode that identifies the intent, checks file existence, notes any gaps (like missing tests or missing parent index export), and provides a verdict.",
+      "files": ["evals/files/freeform-context.md"],
+      "assertions": [
+        "Report announces freeform mode (not OpenSpec mode)",
+        "Report summarises the user's intent (loading skeleton with pulse animation matching FlightCard dimensions)",
+        "Report checks existence of the three created files (Skeleton.tsx, Skeleton.module.scss, index.ts)",
+        "Report identifies missing test file as a gap",
+        "Report identifies missing parent atoms/index.ts export as a gap",
+        "Report includes a verdict section (PASS or PARTIAL PASS)",
+        "Report provides next steps for any identified gaps"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "test-plan-structure",
+      "prompt": "Create a validation test plan for the 'locale-switcher' change. The change artifacts are in the provided files. The app runs on localhost:3000 and the locale switcher is in the site header on every page. Present only the test plan (Step 4 of validation) — do NOT execute it.",
+      "expected_output": "A structured test plan table showing the app, mode, completeness checks planned, and runtime tests with page URLs and expected behaviours.",
+      "files": [
+        "evals/files/openspec-complete/proposal.md",
+        "evals/files/openspec-complete/design.md",
+        "evals/files/openspec-complete/tasks.md"
+      ],
+      "assertions": [
+        "Test plan identifies the app and port (localhost:3000)",
+        "Test plan states the mode (OpenSpec)",
+        "Test plan includes a table of runtime tests with columns for test description and expected behaviour",
+        "At least one test verifies the locale switcher button is visible in the header",
+        "At least one test verifies dropdown opens on click with locale options",
+        "At least one test verifies keyboard interaction (Escape to close)",
+        "At least one test verifies accessibility attributes (aria-expanded, role=listbox)",
+        "Tests reference specific pages to navigate to (e.g. homepage at /)"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "spec-consistency-checking",
+      "prompt": "Perform spec consistency checking (Step 5 completeness checks) for the 'locale-switcher' change. The design.md specifies: Client Component with 'use client', CSS Modules with easyjet tokens, specific file structure, accessibility requirements, and export chain. Assume the component exists but was implemented as a Server Component (no 'use client' directive) and does NOT use easyjet tokens (uses plain CSS values instead). Report the deviations found.",
+      "expected_output": "A spec consistency report that extracts verifiable claims from design.md and reports specific deviations where implementation doesn't match design.",
+      "files": [
+        "evals/files/openspec-complete/proposal.md",
+        "evals/files/openspec-complete/design.md",
+        "evals/files/openspec-complete/tasks.md"
+      ],
+      "assertions": [
+        "Report extracts specific claims from design.md (not vague summaries)",
+        "Report identifies the missing 'use client' directive as a deviation",
+        "Report identifies the missing easyjet token usage as a deviation",
+        "Each deviation states what was expected (from which artifact) and what was found instead",
+        "Deviations are classified or noted as potentially intentional vs bugs",
+        "Report is structured with clear per-claim verification results",
+        "Report does NOT fabricate additional deviations beyond what was stated in the prompt"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "runtime-validation-with-mocked-browser",
+      "prompt": "The locale-switcher change has passed completeness checks. The dev server is confirmed running. The provided file contains mocked Playwright MCP browser tool output for four runtime test steps. Produce the Runtime Validation section of the validation report based on this output, then give an overall verdict.",
+      "expected_output": "A runtime validation report that correctly interprets the mocked browser output — three passing tests and one failing test (locale bundle 404 console error) — and gives a PARTIAL PASS verdict with a specific next step about the missing locale chunk.",
+      "files": [
+        "evals/files/openspec-complete/proposal.md",
+        "evals/files/openspec-complete/design.md",
+        "evals/files/openspec-complete/tasks.md",
+        "evals/files/mocked-runtime-context.md"
+      ],
+      "assertions": [
+        "Report includes a Runtime Validation section covering all four test steps",
+        "Test 1 (locale switcher visible in header) is reported as PASS",
+        "Test 2 (dropdown opens with locale options) is reported as PASS",
+        "Test 3 (Escape closes dropdown) is reported as PASS",
+        "Test 4 (selecting a locale) is reported as FAIL",
+        "Report correctly attributes the Test 4 failure to the 404 console error for the French locale strings chunk",
+        "Report does NOT mark Test 4 as PASS despite the UI updating correctly",
+        "Report gives a PARTIAL PASS verdict (not full PASS)",
+        "Report includes a specific next step about the missing locale bundle (fr-locale-strings.js or similar)",
+        "Report references accessibility tree evidence from the snapshots (e.g. aria-expanded, role=listbox)"
+      ]
+    }
+  ]
+}

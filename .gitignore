@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Generated skills (built from skills-src/ by scripts/build-skills.js)
+.github/skills/
+.claude/skills/
+
+# run-evals: debug artifacts
+skills-src/*/evals/outputs/
+skills-src/*/evals/last-run.json

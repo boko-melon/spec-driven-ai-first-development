@@ -1,0 +1,82 @@
+[
+  {
+    "query": "I've finished building the locale switcher — can you verify it works as expected?",
+    "should_trigger": true
+  },
+  {
+    "query": "the flight card feature is done, can you check it matches what we planned?",
+    "should_trigger": true
+  },
+  {
+    "query": "we've implemented the search results page — can you verify it from a user perspective before we merge?",
+    "should_trigger": true
+  },
+  {
+    "query": "I think the currency selector is complete but I want a second opinion before raising a PR",
+    "should_trigger": true
+  },
+  {
+    "query": "can you do a final check on the destination picker to make sure it matches the spec?",
+    "should_trigger": true
+  },
+  {
+    "query": "the skeleton loader is in — can you run through what was asked for and confirm it's all there?",
+    "should_trigger": true
+  },
+  {
+    "query": "I want to make sure what I've shipped actually works end to end — can you take a look?",
+    "should_trigger": true
+  },
+  {
+    "query": "something feels off about the header — can you verify the recent changes work correctly for users?",
+    "should_trigger": true
+  },
+  {
+    "query": "can you confirm the changes I made to the locale context are complete and working as intended?",
+    "should_trigger": true
+  },
+  {
+    "query": "we're about to merge but want a sanity check — does the new feature actually do what the ticket asked for?",
+    "should_trigger": true
+  },
+  {
+    "query": "add error handling to the airport lookup API route so it returns a 500 properly",
+    "should_trigger": false
+  },
+  {
+    "query": "write unit tests for the LocaleContext provider",
+    "should_trigger": false
+  },
+  {
+    "query": "can you check if our docs pages have any broken links before I publish them?",
+    "should_trigger": false
+  },
+  {
+    "query": "is our caching approach aligned with what the team decided architecturally?",
+    "should_trigger": false
+  },
+  {
+    "query": "create a FlightCard molecule component with departure and arrival time display",
+    "should_trigger": false
+  },
+  {
+    "query": "write an ADR for our decision to use Redis over in-memory caching",
+    "should_trigger": false
+  },
+  {
+    "query": "I need a diagram showing the request flow from browser to CMS and back",
+    "should_trigger": false
+  },
+  {
+    "query": "can you stress-test my caching design before I present it to the team?",
+    "should_trigger": false
+  },
+  {
+    "query": "add a new playbook page about how we use MSW in our test suite",
+    "should_trigger": false
+  },
+  {
+    "query": "I need to add Zod validation to all the env vars in the content service",
+    "should_trigger": false
+  }
+]

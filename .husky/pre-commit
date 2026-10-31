@@ -1,0 +1,2 @@
+# Fails the commit if a skill in skills-src/ does not build (e.g. a broken docs link).
+pnpm build:skills

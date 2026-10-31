@@ -1,0 +1,2 @@
+# $3 is 1 for a branch checkout, 0 for a file checkout.
+[ "$3" = "1" ] && pnpm build:skills || true

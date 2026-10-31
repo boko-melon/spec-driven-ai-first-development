@@ -30,3 +30,7 @@ jobs:
 
       - name: Verify OpenSpec CLI
         run: openspec --version
+
+      # .github/skills/ is gitignored build output from skills-src/.
+      - name: Build skills
+        run: node scripts/build-skills.js

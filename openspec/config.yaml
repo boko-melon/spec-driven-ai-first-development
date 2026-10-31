@@ -1,34 +1,31 @@
-schema: spec-driven
+schema: spec-driven-with-timestamps
 githubCopilot:
   cloudAgent: true
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  Project: spec-driven-ai-first-development — a Next.js app used to practise spec-driven, AI-first development.
+  Tech stack: TypeScript, Next.js 16 (App Router, `app/`), React 19, Tailwind CSS 4, ESLint 9. Package manager: pnpm.
+  This Next.js version has breaking changes from older releases: read the relevant guide in node_modules/next/dist/docs/ before writing Next.js code.
+  Standards and guidance live in the context registry at docs/docs/context-registry/ — treat it as the source of truth.
+  Skills are authored in skills-src/ and built into .github/skills/ and .claude/skills/ by `pnpm build:skills`.
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+rules:
+  proposal:
+    - Before creating the change directory, ask the user for the branch name and run `node scripts/create-openspec-branch.js <user-provided-branch-name>`. Do not continue unless the command succeeds.
+  design:
+    - List all skills in .github/skills/, read the frontmatter `description` of each, and apply constraints only from skills relevant to the decisions being made
+    - Include a "## Skills applied" section in design.md — list each relevant skill with one line on how it shaped the design
+    - Check docs/docs/context-registry/ for standards that apply to the decisions and follow them
+  tasks:
+    - Use the "Skills applied" list from design.md to annotate tasks; re-discover from .github/skills/ only if design.md is unavailable
+    - "Annotate every implementation task with applicable skills: `[skills: <name>, <name>]`"
+    - Break tasks into chunks small enough that each can be completed in a single AI agent session
+    - Include test tasks where the change adds or alters behaviour
+    - "Include verification steps: `pnpm lint`, `pnpm exec tsc --noEmit`, `pnpm build`"
 
-# Per-operation guidance (optional)
-# Add advisory guidance for how apply and archive work should be conducted.
-# This is separate from artifact rules above.
-# Example:
-#   operations:
-#     apply:
-#       guidance:
-#         - Keep test summaries concise
-#     archive:
-#       guidance:
-#         - Summarize the archive outcome before finishing
+operations:
+  apply:
+    guidance:
+      - Before implementing a task, read the SKILL.md file(s) annotated on it — no exceptions
+      - Apply all patterns and constraints from the loaded skill(s)
+      - If a task has no annotation, check .github/skills/ for relevant skills before writing any code
